@@ -1,1 +1,1 @@
-# simple-project-mgmt-app
+# Simple Project Management App (MERN + GraphQL)
