@@ -1,34 +1,41 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import Header from './components/Header'
+import {ApolloProvider, ApolloClient, InMemoryCache} from '@apollo/client'
+import Clients from './components/Clients'
+import AddClientModal from './components/AddClientModal'
+
+const cache = new InMemoryCache({
+  typePolicies: {
+    Query: {
+      fields: {
+        clients: {
+          merge(_, incoming) {
+            return incoming
+          },
+        },
+        projects: {
+          merge(_, incoming) {
+            return incoming
+          },
+        },
+      },
+    },
+  },
+})
+
+const client = new ApolloClient({
+  uri: 'http://localhost:8000/graphql',
+  cache,
+})
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <ApolloProvider client={client}>
+      <Header />
+      <div className='container'>
+        <AddClientModal />
+        <Clients />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    </ApolloProvider>
   )
 }
 
