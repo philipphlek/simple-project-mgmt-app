@@ -22,3 +22,7 @@ export type Project = {
 export type ClientCache = {
   clients: Client[]
 }
+
+export type ProjectCache = {
+  projects: Project[]
+}
